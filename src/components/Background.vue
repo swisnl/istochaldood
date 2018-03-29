@@ -130,9 +130,9 @@
         watch: {
             dark (newValue) {
                 if (newValue) {
-                    this.playDarkOut()
-                } else {
                     this.playDarkIn()
+                } else {
+                    this.playDarkOut()
                 }
             },
         },
