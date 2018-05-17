@@ -1,5 +1,5 @@
 <template>
-    <svg class="background" viewBox="0 0 375 667" xmlns="http://www.w3.org/2000/svg" @click="toggleDark">
+    <svg class="background" viewBox="0 0 375 667" xmlns="http://www.w3.org/2000/svg">
         <path ref="background" fill="#316FB8" d="M0 0H375V667H0z"/>
         <g ref="stars" fill="#fff" transform="translate(0, 70)">
             <circle opacity=".5" cx="231.5" cy="35.5" r="2.5"/>
@@ -55,19 +55,35 @@
 </template>
 
 <script>
+    import { mapState } from 'vuex';
     import { TweenMax, TimelineMax, Circ, Linear, Sine } from 'gsap'
 
     export default {
-        name: 'background',
+        name: 'Background',
 
-        data () {
+        data() {
             return {
                 introDone: false,
-                dark: false,
             }
         },
 
-        mounted () {
+        computed: {
+            ...mapState(['deathState']),
+        },
+
+        watch: {
+            deathState(state) {
+                if (state === 'dead') {
+                    this.playDarkIn();
+                } else if (state === 'alive') {
+
+                } else {
+                    this.playDarkOut();
+                }
+            },
+        },
+
+        mounted() {
             this.$options.timelines = {}
 
             // Stars
@@ -127,18 +143,8 @@
             this.playIntro()
         },
 
-        watch: {
-            dark (newValue) {
-                if (newValue) {
-                    this.playDarkIn()
-                } else {
-                    this.playDarkOut()
-                }
-            },
-        },
-
         methods: {
-            startStars () {
+            startStars() {
                 if (this.$options.timelines.stars) {
                     this.$options.timelines.stars.kill()
                 }
@@ -151,7 +157,7 @@
                 })
             },
 
-            speedUpStars () {
+            speedUpStars() {
                 if (this.$options.timelines.stars) {
                     this.$options.timelines.stars.kill()
                 }
@@ -163,26 +169,18 @@
                 })
             },
 
-            playIntro () {
+            playIntro() {
                 this.$options.timelines.intro.play()
             },
 
-            playDarkIn () {
+            playDarkIn() {
                 this.speedUpStars()
                 this.$options.timelines.dark.play()
             },
 
-            playDarkOut () {
+            playDarkOut() {
                 this.speedUpStars()
                 this.$options.timelines.dark.reverse()
-            },
-
-            toggleDark () {
-                if (!this.introDone) {
-                    return
-                }
-
-                this.dark = !this.dark
             },
         },
 

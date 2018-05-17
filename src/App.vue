@@ -1,11 +1,7 @@
 <template>
     <div id="app">
         <Background/>
-        <div id="nav">
-            <router-link to="/">Home</router-link>
-            |
-            <router-link to="/about">About</router-link>
-        </div>
+
         <router-view/>
     </div>
 </template>
@@ -15,7 +11,7 @@
     import Background from '@/components/Background.vue'
 
     export default {
-        name: 'app',
+        name: 'App',
         components: {
             Background,
         },
